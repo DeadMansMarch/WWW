@@ -124,7 +124,16 @@ class System : CustomStringConvertible{
         let NewOrder = Order(CustomerId: Int(d[0])!, Brand: d[1], Level: d[2], Comment: (d.count > 3) ? d[3] : nil);
         if let Ord = NewOrder{
             if Customers[Ord.customerId] == nil {
-                
+                print("No customer with id '\(d[0])' exists.");
+                var name = [String]();
+                repeat{
+                    name = Interface.activefix(Data: "Please supply customer name: ").components(seperatedBy:" ");
+                }while name.count > 1;
+                WorldsOfData.front(Table:"Customers");
+                var Overlap = WorldsOfData.table!.get(Data: ["First":name[0],"Last":name[1]]);
+                if Overlap.count > 0 {
+                    Overlap.reduce("",{$0 + Customers[$1.get(Index: "CustomerId")]!});
+                }
             }
             Orders.insert(Ord, at: Ord.orderId);
             Interface.update(self.SysId,withValid:"addo \(Int(d[0])!) \(Ord.brand) \(Ord.level)\((Ord.comment != nil) ? Ord.comment! : "")");

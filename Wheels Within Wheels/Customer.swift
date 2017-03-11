@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Customer{
+class Customer:CustomStringConvertible{
     
     let Id:Int;
     let First:String;
@@ -46,5 +46,9 @@ class Customer{
     
     func add(Transaction t:Payment){
         Transactions.append(t.paymentId);
+    }
+    
+    var description:String{
+        return "[\(self.Id)] \(First) \(Last)"
     }
 }
